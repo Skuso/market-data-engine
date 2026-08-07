@@ -1,0 +1,9 @@
+# Build output — never commit generated files
+build/
+
+# Editor/IDE state
+.vscode/
+.cache/
+
+# CMake user presets (personal, not shared)
+CMakeUserPresets.json
