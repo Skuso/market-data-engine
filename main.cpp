@@ -6,6 +6,7 @@
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/beast/ssl.hpp>
 #include <boost/asio/ssl.hpp>
+#include <nlohmann/json.hpp>
 #include <cstdlib>
 #include <string>
 
@@ -19,11 +20,12 @@ using tcp = net::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
 
 int main() {
 
-    // connect to: ws-feed.exchange.coinbase.com
-    // port: 443
+    // The host and port we want to connect to
+    const std::string host = "ws-feed.exchange.coinbase.com";
+    const int port = 443;
 
 
-    std::cout << std::format("connecting to: {}:{}\n", "ws-feed.exchange.coinbase.com", 443);
+    std::cout << std::format("connecting to: {}:{}\n", host, port);
 
     try {
         // The io_context is required for all I/O
@@ -32,29 +34,57 @@ int main() {
         // These objects perform our I/O
         ssl::context ctx{ssl::context::tlsv12_client};
         ctx.set_default_verify_paths();
+        ctx.set_verify_mode(ssl::verify_peer);
         tcp::resolver resolver{ioc};
         websocket::stream<ssl::stream<tcp::socket>> ws{ioc, ctx};
         //         websocket::stream<tcp::socket> ws{ioc};
         
 
         // Look up the domain name
-        auto const results = resolver.resolve("ws-feed.exchange.coinbase.com", "443");
+        auto const results = resolver.resolve(host, std::to_string(port));
 
         // Make the connection on the IP address we get from a lookup
         net::connect(beast::get_lowest_layer(ws), results.begin(), results.end());
 
-        SSL_set_tlsext_host_name(ws.next_layer().native_handle(), "ws-feed.exchange.coinbase.com");
-        ws.next_layer().handshake(ssl::stream_base::client);
+        SSL_set_tlsext_host_name(ws.next_layer().native_handle(), host.c_str());
 
         // Perform the SSL handshake
-        ws.handshake("ws-feed.exchange.coinbase.com", "/");
+        ws.next_layer().handshake(ssl::stream_base::client);
+        ws.handshake(host, "/");
 
         std::cout << "connected\n";
+
+        // subscribe to the BTC-USD ticker channel
+        nlohmann::json subscribe_message = {
+            {"type", "subscribe"},
+            {"channels", {
+                {
+                    {"name", "ticker"},
+                    {"product_ids", {"BTC-USD"}}
+                }
+            }}
+        };
+
+        std::string subscribe_message_str = subscribe_message.dump();
+
+        ws.write(net::buffer(subscribe_message_str));
+
+        beast::flat_buffer buffer;
+        while (true) {
+            ws.read(buffer);
+            std::string message = beast::buffers_to_string(buffer.data());
+            std::cout << "Received: " << message << std::endl;
+            buffer.consume(buffer.size());
+        }
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
+
+    
+
+
 
     return EXIT_SUCCESS;
 }
