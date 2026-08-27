@@ -8,6 +8,7 @@
 #include <boost/asio/ssl.hpp>
 #include <nlohmann/json.hpp>
 #include <cstdlib>
+#include <cstdint>
 #include <string>
 
 namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
@@ -17,6 +18,21 @@ namespace websocket = beast::websocket; // from <boost/beast/websocket.hpp>
 namespace net = boost::asio;            // from <boost/asio.hpp>
 
 using tcp = net::ip::tcp;               // from <boost/asio/ip/tcp.hpp>
+using Price = std::int64_t; // Price is represented as an integer scaled by PRICE_SCALE to avoid floating-point inaccuracies
+using Size = std::int64_t; // Size is represented as an integer scaled by PRICE_SCALE to avoid floating-point inaccuracies
+
+constexpr int64_t PRICE_SCALE  = 100'000'000; // 1e8
+
+struct Values { // Structure to hold price and size values
+    Price price;
+    Size size;
+};
+
+Price parse_price(const std::string& price_str) { // Parse a price string into a Price type while avoiding floating-point inaccuracies
+    
+    
+
+}
 
 int main() {
 
@@ -59,7 +75,7 @@ int main() {
             {"type", "subscribe"},
             {"channels", {
                 {
-                    {"name", "ticker"},
+                    {"name", "matches"},
                     {"product_ids", {"BTC-USD"}}
                 }
             }}

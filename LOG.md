@@ -4,3 +4,4 @@
 8/23/26-1: Try-Catch block added to perform a TTLS handshake to coinbase, failed for now but progress made in the attempt, also modified cmaklists
 8/23/26-2: Fixed SSL websocket and esatblish a connection with coinbase
 8/26/26-1: Subscribed and opened the firehose, printing live trades now of BTC-USD
+8/26/26-2: Started on adding a parser for the string values coming from the exchange feed, working on making a function that prevents floating point inaccuracy
