@@ -65,6 +65,18 @@ std::optional<std::int64_t> parse_fixed_point(const std::string& str) {
     return (int_val * PRICE_SCALE) + frac_val;
 }
 
+std::string format_price(Price price) {
+    std::int64_t integer_part = price / PRICE_SCALE;
+    std::int64_t fractional_part = price % PRICE_SCALE;
+
+    // Format fractional part with leading zeros
+    std::string fractional_str = std::to_string(fractional_part);
+    fractional_str.insert(fractional_str.begin(), 8 - fractional_str.length(), '0');
+
+    return std::format("{}.{}", integer_part, fractional_str);
+}
+
+
 int main() {
   // The host and port we want to connect to
   const std::string host = "ws-feed.exchange.coinbase.com";
@@ -151,7 +163,7 @@ int main() {
       Price price = *price_opt;
       Size size = *size_opt;
 
-      std::cout << std::format("Matched - Price: {}, Size: {}\n", price, size);
+      std::cout << std::format("Matched - Price: {}, Size: {}\n", format_price(price), size);
     }
   } catch (const std::exception& e) {
     std::cerr << "Error: " << e.what() << std::endl;
