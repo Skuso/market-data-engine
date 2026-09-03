@@ -66,14 +66,7 @@ std::optional<std::int64_t> parse_fixed_point(const std::string& str) {
 }
 
 std::string format_price(Price price) {
-    std::int64_t integer_part = price / PRICE_SCALE;
-    std::int64_t fractional_part = price % PRICE_SCALE;
-
-    // Format fractional part with leading zeros
-    std::string fractional_str = std::to_string(fractional_part);
-    fractional_str.insert(fractional_str.begin(), 8 - fractional_str.length(), '0');
-
-    return std::format("{}.{}", integer_part, fractional_str);
+   return std::format("{}.{:08}", price / PRICE_SCALE, price % PRICE_SCALE);
 }
 
 
