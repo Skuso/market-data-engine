@@ -8,3 +8,4 @@
 09/01/2026-1: Finished Parsing the string values over several days of work and learning more about beast, loop proprly collects values now
 09/03/2026-1: Simplified the price formatting function, finished overall on the first milestone of reading and parsing values, now I can start on processing the order book
 09/04/2026-1: Documented the functions for my own sanity, created a setup file for any future contributers and easier setup on a new machine, updated the README
+09/04/2026-2: Started on order book class
