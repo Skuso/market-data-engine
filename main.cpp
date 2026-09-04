@@ -25,15 +25,22 @@ using Price = std::int64_t;
 using Size = std::int64_t;
 constexpr std::int64_t PRICE_SCALE = 100'000'000;
 
+/**
+ * Parses a string representing a fixed-point decimal number into an integer representation scaled by PRICE_SCALE.
+ *
+ * @instring The input string to parse.
+ * @return An optional containing the parsed integer value, or std::nullopt if parsing fails.
+ */
+
 std::optional<std::int64_t> parse_fixed_point(const std::string& str) {
     if (str.empty()) return std::nullopt;
 
-    // Policy: Prices and sizes in this crypto feed cannot be negative.
+    // Policy: Prices and sizes in this crypto feed can never be negative.
     if (str.front() == '-') return std::nullopt;
 
     auto decimal_pos = str.find('.');
 
-    if (decimal_pos == std::string::npos) {
+    if (decimal_pos == std::string::npos) { // No decimal point, treat as integer
         std::int64_t value = 0;
         auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), value);
         // Ensure successful parse AND that no trailing garbage ("5abc") was left behind
@@ -65,11 +72,22 @@ std::optional<std::int64_t> parse_fixed_point(const std::string& str) {
     return (int_val * PRICE_SCALE) + frac_val;
 }
 
+/**
+ * Formats a Price value into a string representation with 8 decimal places.
+ *
+ * @param price The Price value to format.
+ * @return A string representing the formatted price.
+ */
 std::string format_price(Price price) {
    return std::format("{}.{:08}", price / PRICE_SCALE, price % PRICE_SCALE);
 }
 
-
+/**
+ * The main function establishes a secure WebSocket connection to the Coinbase exchange feed,
+ * subscribes to the BTC-USD ticker channel, and continuously reads and processes match messages.
+ *
+ * @return EXIT_SUCCESS on successful execution, or EXIT_FAILURE on error.
+ */
 int main() {
   // The host and port we want to connect to
   const std::string host = "ws-feed.exchange.coinbase.com";
