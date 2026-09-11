@@ -12,6 +12,7 @@
 #include <nlohmann/json.hpp>
 #include <optional>
 #include <string>
+#include "order-book.h"
 
 namespace ssl = boost::asio::ssl;        // from <boost/asio/ssl.hpp>
 namespace beast = boost::beast;          // from <boost/beast.hpp>
@@ -20,9 +21,6 @@ namespace websocket = beast::websocket;  // from <boost/beast/websocket.hpp>
 namespace net = boost::asio;             // from <boost/asio.hpp>
 
 using tcp = net::ip::tcp;    // from <boost/asio/ip/tcp.hpp>
-
-using Price = std::int64_t;
-using Size = std::int64_t;
 constexpr std::int64_t PRICE_SCALE = 100'000'000;
 
 /**
@@ -124,7 +122,13 @@ int main() {
     // subscribe to the BTC-USD ticker channel
     nlohmann::json subscribe_message = {
         {"type", "subscribe"},
-        {"channels", {{{"name", "matches"}, {"product_ids", {"BTC-USD"}}}}}};
+        {"channels", {
+          {
+            {"name", "matches"}, {"product_ids", {"BTC-USD"}}
+          }
+        }
+      }
+    };
 
     std::string subscribe_message_str = subscribe_message.dump();
 
