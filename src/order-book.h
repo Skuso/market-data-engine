@@ -3,15 +3,12 @@
 #include <functional>  // std::greater
 #include <map>
 #include <optional>
+#include "types.hpp"
 
 // Domain types — move these here (out of main.cpp) so book, parser,
 // and tests all share one definition. This header is JSON-free and
 // network-free by design: the book is testable in total isolation.
 
-using Price = std::int64_t;
-using Size  = std::int64_t;
-
-enum class Side { Bid, Ask };
 
 class OrderBook {
 public:

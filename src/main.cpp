@@ -4,14 +4,18 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/ssl.hpp>
 #include <boost/beast/websocket.hpp>
+
+#include <iostream>
 #include <charconv>
 #include <cstdint>
 #include <cstdlib>
 #include <format>
-#include <iostream>
+#include <string>
+
 #include <nlohmann/json.hpp>
 #include <optional>
-#include <string>
+
+#include "types.hpp"
 #include "order-book.h"
 
 namespace ssl = boost::asio::ssl;        // from <boost/asio/ssl.hpp>
@@ -21,7 +25,7 @@ namespace websocket = beast::websocket;  // from <boost/beast/websocket.hpp>
 namespace net = boost::asio;             // from <boost/asio.hpp>
 
 using tcp = net::ip::tcp;    // from <boost/asio/ip/tcp.hpp>
-constexpr std::int64_t PRICE_SCALE = 100'000'000;
+
 
 /**
  * Parses a string representing a fixed-point decimal number into an integer representation scaled by PRICE_SCALE.

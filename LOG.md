@@ -8,4 +8,7 @@
 09/01/2026-1: Finished Parsing the string values over several days of work and learning more about beast, loop proprly collects values now
 09/03/2026-1: Simplified the price formatting function, finished overall on the first milestone of reading and parsing values, now I can start on processing the order book
 09/04/2026-1: Documented the functions for my own sanity, created a setup file for any future contributers and easier setup on a new machine, updated the README
-09/04/2026-2: Started on order book class
+09/04/2026-2: Started on order book class, added new file "order-book.h" and created 7 new function prototypes
+09/09/2026-1: Created empty placeholder functions for my orderbook class
+09/16/2026-1: Moved declarations to types.hpp, left a small mess between my files and needs fixing before the project runs again
+09/16/2026-2: Rewrote my cmaketxts to include new files and link them to the library properly, still needs a few fixesm but it runs now
