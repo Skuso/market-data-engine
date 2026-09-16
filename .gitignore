@@ -7,6 +7,3 @@ build/
 
 # CMake user presets (personal, not shared)
 CMakeUserPresets.json
-
-#testing file
-testing.cpp
