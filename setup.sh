@@ -10,3 +10,6 @@ sudo apt install -y gh
 
 # Project dependencies
 sudo apt install -y libboost-all-dev libssl-dev nlohmann-json3-dev
+
+#for testing the order book
+sudo apt install catch2
