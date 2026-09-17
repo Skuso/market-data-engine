@@ -15,8 +15,8 @@
 #include <nlohmann/json.hpp>
 #include <optional>
 
-#include "types.hpp"
-#include "order-book.h"
+#include "types.h"
+#include "order_book.h"
 
 namespace ssl = boost::asio::ssl;        // from <boost/asio/ssl.hpp>
 namespace beast = boost::beast;          // from <boost/beast.hpp>

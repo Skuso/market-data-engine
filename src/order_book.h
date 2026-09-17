@@ -3,7 +3,7 @@
 #include <functional>  // std::greater
 #include <map>
 #include <optional>
-#include "types.hpp"
+#include "types.h"
 
 // Domain types — move these here (out of main.cpp) so book, parser,
 // and tests all share one definition. This header is JSON-free and
