@@ -1,14 +1,12 @@
 # market-data-engine
 
-A real-time C++20 market data engine that consumes live cryptocurrency exchange feeds over TLS WebSockets, parses trades into exact fixed-point types, and maintains a live limit order book — built from scratch as a learning project, working toward a paper-trading system with honest fill simulation.
-
-**Why it exists:** most entry-level portfolios prove modeling skills; this one proves systems skills — networking, exact numerics, data structures, testing discipline, and (coming) concurrency and performance measurement. Every design decision is documented as it's made in [LOG.md](LOG.md).
+A real-time C++20 market data engine that consumes live cryptocurrency exchange feeds over TLS WebSockets, parses trades into exact fixed-point types, and maintains a live limit order book, built from scratch as a learning project, working toward a paper-trading system with honest fill simulation.
 
 ## Current capabilities
 
 - Connects to the Coinbase Exchange WebSocket feed (`matches` channel) over TLS with certificate verification and SNI
 - Parses live trade messages into typed `Trade` values
-- Exact decimal arithmetic: prices and sizes parsed **directly from string to scaled `int64_t`** (×10⁸), never passing through floating point — see [Design notes](#design-notes)
+- Exact decimal arithmetic: prices and sizes parsed **directly from string to scaled `int64_t`** (×10⁸), never passing through floating point: see [Design notes](#design-notes)
 - Limit order book with price-level aggregation (in progress, test-first)
 
 ## Building
@@ -47,7 +45,7 @@ Later phases will add benchmarking/profiling tooling and possibly a faster JSON 
 
 ## Design notes
 
-**Prices are integers.** Exchanges send prices as JSON *strings* because JSON numbers decay to IEEE-754 doubles, which cannot exactly represent most decimal fractions. This engine parses those strings directly into `int64_t` scaled by 10⁸ using `std::from_chars` — no `stod`, no double anywhere in the money path. Malformed input returns `std::optional` emptiness rather than throwing ("parse, don't validate").
+**Prices are integers.** Exchanges send prices as JSON *strings* because JSON numbers decay to IEEE-754 doubles, which cannot exactly represent most decimal fractions. This engine parses those strings directly into `int64_t` scaled by 10⁸ using `std::from_chars`, no `stod`, no double anywhere in the money path. Malformed input returns `std::optional` emptiness rather than throwing ("parse, don't validate").
 
 **The order book is network-free.** `OrderBook` takes typed values and knows nothing about JSON or sockets, so it is unit-tested in total isolation with hand-crafted update sequences. Level updates use replace-semantics (a size *replaces* the level's total; size 0 erases the level), matching the Coinbase `level2` channel contract.
 
@@ -68,7 +66,7 @@ Later phases will add benchmarking/profiling tooling and possibly a faster JSON 
 
 ## Engineering log
 
-Decisions, bugs, and lessons are recorded in [LOG.md](LOG.md) as they happen — including the ones that went wrong first.
+Decisions, bugs, and lessons are recorded in [LOG.md](LOG.md) as they happen, including the ones that went wrong first.
 
 <img width="1547" height="663" alt="image" src="https://github.com/user-attachments/assets/cb764f8e-2051-4496-a806-523a9c948628" />
 
