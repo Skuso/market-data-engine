@@ -49,20 +49,20 @@ Later phases will add benchmarking/profiling tooling and possibly a faster JSON 
 
 **The order book is network-free.** `OrderBook` takes typed values and knows nothing about JSON or sockets, so it is unit-tested in total isolation with hand-crafted update sequences. Level updates use replace-semantics (a size *replaces* the level's total; size 0 erases the level), matching the Coinbase `level2` channel contract.
 
-**Bids and asks are mirrored maps.** `std::map<Price, Size, std::greater<Price>>` for bids, ascending for asks — both sides expose their best price at `begin()`. Chosen for clarity first; measurement-driven optimization is a later phase, on purpose.
+**Bids and asks are mirrored maps.** `std::map<Price, Size, std::greater<Price>>` for bids, ascending for asks, both sides expose their best price at `begin()`. Chosen for clarity first; measurement-driven optimization is a later phase, on purpose.
 
 ## Roadmap
 
-- [x] **Phase 0 — Foundation:** CMake, strict warnings, tooling, repo hygiene
-- [x] **Phase 1a — Live feed:** TLS WebSocket connection, subscription, message stream
-- [x] **Phase 1b — Typed parsing:** fixed-point parser (`from_chars`, optional-based failure), Trade structs
-- [ ] **Phase 1c — Resilience:** reconnect loop with exponential backoff, 30-minute unattended run
-- [ ] **Phase 2 — Order book:** live L2 book, sequence-gap handling, 15+ unit tests *(in progress)*
-- [ ] **Phase 3 — Analytics:** spread, microprice, imbalance, rolling VWAP/volatility in constant memory
-- [ ] **Phase 4 — Concurrency:** network/processing threads, SPSC queue, sanitizer-clean
-- [ ] **Phase 5 — Performance:** replay benchmarking, p50/p99 latency, profile-guided optimization
-- [ ] **Phase 6 — Paper trading:** strategy interface, book-walking fill simulator, P&L and risk limits
-- [ ] **Phase 7 — Polish:** architecture docs, benchmark numbers, demo
+- [x] **Phase 0 - Foundation:** CMake, strict warnings, tooling, repo hygiene
+- [x] **Phase 1a - Live feed:** TLS WebSocket connection, subscription, message stream
+- [x] **Phase 1b - Typed parsing:** fixed-point parser (`from_chars`, optional-based failure), Trade structs
+- [ ] **Phase 1c - Resilience:** reconnect loop with exponential backoff, 30-minute unattended run
+- [ ] **Phase 2 - Order book:** live L2 book, sequence-gap handling, 15+ unit tests *(in progress)*
+- [ ] **Phase 3 - Analytics:** spread, microprice, imbalance, rolling VWAP/volatility in constant memory
+- [ ] **Phase 4 - Concurrency:** network/processing threads, SPSC queue, sanitizer-clean
+- [ ] **Phase 5 - Performance:** replay benchmarking, p50/p99 latency, profile-guided optimization
+- [ ] **Phase 6 - Paper trading:** strategy interface, book-walking fill simulator, P&L and risk limits
+- [ ] **Phase 7 - Polish:** architecture docs, benchmark numbers, demo
 
 ## Engineering log
 
