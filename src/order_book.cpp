@@ -1,7 +1,5 @@
 #include "order_book.h"
 
-#include <iostream>
-
 // Constructor implementation (if needed)
 void OrderBook::clear() {
   // Implementation for clearing the order book
@@ -27,19 +25,40 @@ void OrderBook::set_level(Side side, Price price, Size size) {
 }
 std::optional<Price> OrderBook::best_bid() const {
   // Implementation for retrieving the best bid price
-  return std::nullopt;  // Placeholder
+  if (!bids_.empty()) {
+    return bids_.begin()->first;  // Best bid is the highest price
+  }
+  return std::nullopt;  // No bids available
 }
 std::optional<Price> OrderBook::best_ask() const {
   // Implementation for retrieving the best ask price
-  return std::nullopt;  // Placeholder
+  if (!asks_.empty()) {
+    return asks_.begin()->first;  // Best ask is the lowest price
+  }
+  return std::nullopt;  // No asks available
 }
 std::optional<Size> OrderBook::size_at(Side side, Price price) const {
   // Implementation for retrieving the size at a specific price level
-  return std::nullopt;  // Placeholder
+  if (side == Side::Bid) {
+    auto it = bids_.find(price);
+    if (it != bids_.end()) {
+      return it->second;
+    }
+  } else {
+    auto it = asks_.find(price);
+    if (it != asks_.end()) {
+      return it->second;
+    }
+  }
+  return std::nullopt;  // Level not found
 }
 std::size_t OrderBook::depth(Side side) const {
   // Implementation for retrieving the depth of the order book
-  return 0;  // Placeholder
+  if (side == Side::Bid) {
+    return bids_.size();
+  } else {
+    return asks_.size();
+  }
 }
 bool OrderBook::ready() const {
   // Implementation for checking if the order book is ready

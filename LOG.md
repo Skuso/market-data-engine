@@ -13,3 +13,5 @@
 09/16/2026-1: Moved declarations to types.hpp, left a small mess between my files and needs fixing before the project runs again
 09/16/2026-2: Rewrote my cmaketxts to include new files and link them to the library properly, still needs a few fixesm but it runs now
 09/16/2026-3: Fixed Cmakelists.txt and organized it, now the libraries cleanly link to the main executable
+09/20/2026-1: Wrote my test cases and successfuly got a testing build running, now I can write the functions
+09/20/2026-2: Filled in all my functions, iteratively tested them until all test cases passed for the order book class
